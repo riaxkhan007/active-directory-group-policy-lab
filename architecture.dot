@@ -1,0 +1,27 @@
+digraph Lab {
+  graph [rankdir=LR, bgcolor="#F4F7FB", pad="0.28", nodesep="0.34", ranksep="0.55", splines=ortho, fontname="Arial", label="ACTIVE DIRECTORY + GROUP POLICY LAB  |  corp.lab", labelloc=t, fontsize=22, fontcolor="#142B4A"];
+  node [shape=box, style="rounded,filled", fontname="Arial", fontsize=11, color="#C7D3E0", penwidth=1.2, margin="0.16,0.12", fontcolor="#142B4A"];
+  edge [color="#6F879F", penwidth=1.5, arrowsize=0.75];
+  subgraph cluster_server {
+    label="WINDOWS SERVER 2022  |  DC01"; color="#2B6CB0"; penwidth=1.6; style="rounded"; fontcolor="#24558A"; fontsize=14;
+    ad [label="Active Directory Domain Services\nDomain: corp.lab  |  NetBIOS: CORP", fillcolor="#DDEBFA"];
+    dns [label="DNS Server\nAD-integrated name resolution", fillcolor="#E7F1FC"];
+    gpo [label="Group Policy Management\nDefault Domain Policy\nWorkstation Security GPO\nDepartment Drive Maps", fillcolor="#E7F1FC"];
+    fs [label="File Services\nC:\\SHARED FOLDER\\Corp Lab Data\n\\\\DC01\\Corp Lab Data", fillcolor="#DDF4F1", color="#5AA99D"];
+    ad -> dns [style=dashed, arrowhead=none]; ad -> gpo [style=dashed, arrowhead=none]; ad -> fs [style=dashed, arrowhead=none];
+  }
+  subgraph cluster_ous {
+    label="ORGANIZATIONAL UNITS + SECURITY GROUPS"; color="#6D7FB3"; penwidth=1.4; style="rounded"; fontcolor="#475A8A"; fontsize=13;
+    hr [label="HR OU\nsara.ahmed\nHR-Users  |  H:", fillcolor="#F0EAFE"];
+    fin [label="Finance OU\nbilal.shah\nFinance-Users  |  F:", fillcolor="#F0EAFE"];
+    it [label="IT OU\nali.raza\nIT-Admins  |  I:", fillcolor="#F0EAFE"];
+    mg [label="Management OU\nahmad.khan\nManagement-Users  |  M:", fillcolor="#F0EAFE"];
+    ws [label="Workstations OU\nCLIENT01 computer account", fillcolor="#FFF3DB", color="#D2A34A"];
+  }
+  client [label="DOMAIN-JOINED CLIENT\nCLIENT01\nUser logon + policy processing\nMapped department drive", fillcolor="#DDF4F1", color="#5AA99D", penwidth=1.5];
+  ad -> hr [label="identity / OU structure"];
+  ad -> fin [style=dashed]; ad -> it [style=dashed]; ad -> mg [style=dashed]; ad -> ws [style=dashed];
+  gpo -> client [label="computer + user policies"];
+  fs -> client [label="SMB access"];
+  hr -> client [style=dotted, label="HR user session"];
+}
